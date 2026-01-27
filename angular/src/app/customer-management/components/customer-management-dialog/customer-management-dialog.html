@@ -1,0 +1,45 @@
+<abp-modal [(visible)]="visible" (close)="close()">
+  <ng-template #abpHeader>
+    <h5>Create Customer</h5>
+  </ng-template>
+
+  <ng-template #abpBody>
+    <form [formGroup]="form">
+      <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input class="form-control" formControlName="name" placeholder="Name" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" formControlName="email" placeholder="Email" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input class="form-control" formControlName="phone" placeholder="Phone" />
+      </div>
+
+      <hr />
+      <h6 class="mb-2">Billing Address</h6>
+      <div formGroupName="billingAddress">
+        <div class="mb-2">
+          <input class="form-control" placeholder="Street" formControlName="street" />
+        </div>
+        <div class="mb-2">
+          <input class="form-control" placeholder="City" formControlName="city" />
+        </div>
+        <div class="mb-2">
+          <input class="form-control" placeholder="Postal Code" formControlName="postalCode" />
+        </div>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #abpFooter>
+    <button class="btn btn-outline-secondary" abpClose>Cancel</button>
+    <button class="btn btn-primary" [disabled]="form.invalid || isSaving" (click)="save()">
+      Save
+    </button>
+  </ng-template>
+</abp-modal>

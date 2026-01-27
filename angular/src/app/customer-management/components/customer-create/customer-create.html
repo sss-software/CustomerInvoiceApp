@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h4 class="mb-0">Create Customer</h4>
+    <button class="btn btn-outline-secondary" (click)="cancel()">
+      Back
+    </button>
+  </div>
+
+  <div class="card-body">
+    <form [formGroup]="form">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input class="form-control" formControlName="name" placeholder="Name" />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input class="form-control" formControlName="email" placeholder="Email" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input class="form-control" formControlName="phone" placeholder="Phone" />
+      </div>
+
+      <hr />
+      <h6>Billing Address</h6>
+
+      <div formGroupName="billingAddress" class="row">
+        <div class="col-md-4">
+          <input class="form-control" placeholder="Street" formControlName="street" />
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" placeholder="City" formControlName="city" />
+        </div>
+        <div class="col-md-4">
+          <input class="form-control" placeholder="Postal Code" formControlName="postalCode" />
+        </div>
+      </div>
+
+      <div class="mt-4 text-end">
+        <button class="btn btn-secondary me-2" type="button" (click)="cancel()">Cancel</button>
+        <button class="btn btn-primary" type="button" (click)="save()" [disabled]="isSaving">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

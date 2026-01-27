@@ -1,0 +1,106 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <!-- Left: Title -->
+        <h4 class="mb-0">Customer Management</h4>
+
+        <!-- Middle: Search box -->
+        <div class="flex-grow-1 d-flex justify-content-center">
+            <div class="input-group" style="width: 400px; max-width: 80%;">
+                <input type="text" class="form-control" placeholder="Search..." [(ngModel)]="searchTerm"
+                    (keyup.enter)="search()" />
+
+                <!-- Search Button: only visible when input is empty -->
+                <button type="button" title="Search" class="btn btn-outline-secondary"
+                    *ngIf="!searchTerm || searchTerm.trim() === ''" (click)="search()">
+                    <i class="fas fa-search"></i>
+                </button>
+
+                <!-- Clear Button: only visible when input has text -->
+                <button type="button" title="Clear current search" class="btn btn-outline-secondary"
+                    *ngIf="searchTerm && searchTerm.trim() !== ''" (click)="clearSearch()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right: Create Customer Button -->
+        <div>
+            <button type="button" title="Create a new customer" class="btn btn-primary" (click)="create()">
+                <i class="fas fa-plus me-1"></i>
+                Create Customer
+            </button>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th (click)="changeSorting('name')" style="cursor:pointer">
+                        Name
+                        <i *ngIf="sortingField === 'name'" class="fas"
+                            [ngClass]="sortingDirection === 'asc' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+                    </th>
+                    <th (click)="changeSorting('email')" style="cursor:pointer">
+                        Email
+                        <i *ngIf="sortingField === 'email'" class="fas"
+                            [ngClass]="sortingDirection === 'asc' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+                    </th>
+                    <th (click)="changeSorting('phone')" style="cursor:pointer">
+                        Phone
+                        <i *ngIf="sortingField === 'phone'" class="fas"
+                            [ngClass]="sortingDirection === 'asc' ? 'fa-sort-up' : 'fa-sort-down'"></i>
+                    </th>
+                    <th>Billing Address</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let customer of customers" [class.selected-row]="customer.id === selectedCustomerId"
+                    (click)="selectCustomer(customer.id)">
+                    <td>{{ customer.name }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>
+                        {{ customer.billingAddress?.street }},
+                        {{ customer.billingAddress?.city }},
+                        {{ customer.billingAddress?.postalCode }}
+                    </td>
+                    <td class="text-end">
+                        <button type="button" title="View Customer Details" class="btn btn-sm btn-outline-primary me-1"
+                            (click)="view(customer.id)">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button type="button" title="Edit Customer Details"
+                            class="btn btn-sm btn-outline-secondary me-1" (click)="edit(customer.id)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" title="Delete Selected Customer" class="btn btn-sm btn-outline-danger"
+                            (click)="delete(customer)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card-footer d-flex justify-content-center align-items-center py-3">
+        <div>
+            Showing {{ startItem }} – {{ endItem }} of {{ totalCount }}
+        </div>
+        <div class="mx-4"></div>
+        <div class="d-flex align-items-center">
+            <button type="button" title="Page Count" class="btn btn-sm btn-outline-secondary me-2"
+                [disabled]="page === 1" (click)="changePage(page - 1)">
+                ‹ Prev
+            </button>
+            <span>Page {{ page }} of {{ totalPages }}</span>
+            <button type="button" title="Page Navigation" class="btn btn-sm btn-outline-secondary ms-2"
+                [disabled]="page >= totalPages" (click)="changePage(page + 1)">
+                Next ›
+            </button>
+        </div>
+    </div>
+</div>

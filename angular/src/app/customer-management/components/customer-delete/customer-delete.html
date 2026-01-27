@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-header">
+    <h4>Delete Customer</h4>
+  </div>
+
+  <div class="card-body" *ngIf="customer; else loading">
+    <!-- Readonly customer info -->
+    <div class="mb-3"><strong>Name:</strong> {{ customer.name }}</div>
+    <div class="mb-3"><strong>Email:</strong> {{ customer.email }}</div>
+    <div class="mb-3"><strong>Phone:</strong> {{ customer.phone }}</div>
+    <div class="mb-3">
+      <strong>Billing Address:</strong>
+      {{ customer.billingAddress?.street }}, {{ customer.billingAddress?.city }}, {{ customer.billingAddress?.postalCode }}
+    </div>
+
+    <!-- Form for confirmation checkbox -->
+    <form [formGroup]="form">
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" formControlName="confirmDelete" id="confirmDelete">
+        <label class="form-check-label" for="confirmDelete">
+          I confirm that I want to delete this customer
+        </label>
+      </div>
+
+      <!-- Delete button -->
+      <button class="btn btn-danger" [disabled]="!form.get('confirmDelete')?.value || isDeleting" (click)="delete()">
+        Delete
+      </button>
+
+      <!-- Cancel button -->
+      <button class="btn btn-secondary ms-2" type="button" (click)="router.navigate(['/customers'])">
+        Cancel
+      </button>
+    </form>
+  </div>
+
+  <ng-template #loading>
+    <div class="card-body text-center py-5">
+      Loading customer details...
+    </div>
+  </ng-template>
+</div>
