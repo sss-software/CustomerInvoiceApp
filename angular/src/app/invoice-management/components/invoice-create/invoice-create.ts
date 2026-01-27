@@ -2,7 +2,6 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomerDto } from '@proxy/customer-management/dtos';
-import { CreateUpdateInvoiceDto } from '@proxy/invoice-management/dtos';
 import { CustomerProxyService } from 'src/app/customer-management/services/customer-proxy-service';
 import { InvoiceProxyService } from '../../services/invoice-proxy-service';
 import { CommonModule } from '@angular/common';
@@ -80,8 +79,8 @@ export class InvoiceCreateComponent implements OnInit {
     debugger;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-          console.log('Form is invalid. Current errors:');
-    this.logFormErrors(this.form);
+      console.log('Form is invalid. Current errors:');
+      this.logFormErrors(this.form);
       return;
     }
 
@@ -106,17 +105,17 @@ export class InvoiceCreateComponent implements OnInit {
   }
 
   private logFormErrors(group: FormGroup | FormArray, parentKey: string = ''): void {
-  Object.keys(group.controls).forEach(key => {
-    const control = group.controls[key];
-    const controlKey = parentKey ? `${parentKey}.${key}` : key;
+    Object.keys(group.controls).forEach(key => {
+      const control = group.controls[key];
+      const controlKey = parentKey ? `${parentKey}.${key}` : key;
 
-    if (control instanceof FormGroup || control instanceof FormArray) {
-      this.logFormErrors(control, controlKey);
-    } else if (control.invalid) {
-      console.log(`Control "${controlKey}" is invalid:`, control.errors);
-    }
-  });
-}
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.logFormErrors(control, controlKey);
+      } else if (control.invalid) {
+        console.log(`Control "${controlKey}" is invalid:`, control.errors);
+      }
+    });
+  }
 
 
   cancel(): void {

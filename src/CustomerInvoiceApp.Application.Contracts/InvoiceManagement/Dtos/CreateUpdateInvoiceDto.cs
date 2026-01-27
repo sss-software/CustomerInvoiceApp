@@ -8,6 +8,7 @@ namespace CustomerInvoiceApp.InvoiceManagement.Dtos
 		public Guid CustomerId { get; set; }
 		public DateTime InvoiceDate { get; set; }
 		public string Number { get; set; }
+		public bool? PaidUp { get; set; }
 		public List<CreateUpdateInvoiceLineDto> Lines { get; set; } = new();
 	}
 }

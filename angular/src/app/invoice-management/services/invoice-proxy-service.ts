@@ -33,5 +33,13 @@ export class InvoiceProxyService {
   // Delete an invoice
   delete(id: string) {
     return this.api.delete(id);
-  } 
+  }
+
+  getByCustomer(customerId: string) {
+    return this.api.getByCustomer(customerId);
+  }
+
+  markAsPaid(id: string) {
+    return this.api.markAsPaid(id);
+  }
 }

@@ -97,6 +97,20 @@ export class InvoiceListComponent implements OnInit {
     this.selectedInvoiceId = invoiceId;
   }
 
+  markAsPaid(invoice: InvoiceDto): void {
+    debugger
+    if (!invoice || invoice.paidUp) return;
+
+    this.invoiceService.markAsPaid(invoice.id).subscribe({
+      next: (updated) => {
+        invoice.paidUp = updated.paidUp;
+      },
+      error: (err) => {
+        console.error('Failed to mark invoice as paid:', err);
+      }
+    });
+  }
+
   get totalPages(): number {
     return Math.ceil(this.totalCount / this.pageSize);
   }

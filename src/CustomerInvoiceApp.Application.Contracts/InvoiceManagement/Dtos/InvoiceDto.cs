@@ -11,6 +11,8 @@ namespace CustomerInvoiceApp.InvoiceManagement.Dtos
 
 		public string Number { get; set; }
 
+		public bool? PaidUp { get; set; }
+
 		public string CustomerName { get; set; }
 		public List<InvoiceLineDto> Lines { get; set; } = new();
 	}

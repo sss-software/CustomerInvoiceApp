@@ -15,5 +15,6 @@ namespace CustomerInvoiceApp.InvoiceManagement.Interfaces
 		Task<InvoiceDto> UpdateAsync(Guid id, CreateUpdateInvoiceDto input);
 		Task DeleteAsync(Guid id);
 		Task<List<InvoiceDto>> GetByCustomerAsync(Guid customerId);
+		Task<InvoiceDto> MarkAsPaidAsync(Guid id);
 	}
 }

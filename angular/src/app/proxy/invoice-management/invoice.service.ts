@@ -53,6 +53,14 @@ export class InvoiceService {
     { apiName: this.apiName,...config });
   
 
+  markAsPaid = (id: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, InvoiceDto>({
+      method: 'PATCH',
+      url: `/api/app/invoice/${id}/mark-paid`,
+    },
+    { apiName: this.apiName,...config });
+  
+
   update = (id: string, input: CreateUpdateInvoiceDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, InvoiceDto>({
       method: 'PUT',

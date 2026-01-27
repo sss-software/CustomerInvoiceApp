@@ -23,17 +23,14 @@ public class CustomerInvoiceAppDbMigratorModule : AbpModule
 	{
 		var configuration = context.Services.GetConfiguration();
 
-		// Set the connection string for all DbContexts
 		Configure<AbpDbConnectionOptions>(options =>
 		{
 			options.ConnectionStrings.Default =
 				configuration.GetConnectionString("Default");
 		});
 
-		// Register module migration services
 		context.Services.AddTransient<ICustomerInvoiceAppDbSchemaMigrator, InvoiceManagementDbMigrationService>();
 		context.Services.AddTransient<ICustomerInvoiceAppDbSchemaMigrator, CustomerManagementDbMigrationService>();
-		// Register the main migration service
 		context.Services.AddTransient<CustomerInvoiceAppDbMigrationService>();
 	}
 }

@@ -9,7 +9,9 @@ namespace CustomerInvoiceApp.InvoiceManagement.Entities
 	{
 		public Guid CustomerId { get; private set; }
 		public DateTime InvoiceDate { get; private set; }
-		public string Number { get; private set; }
+		public string Number { get; private set; } 
+
+		public bool? PaidUp { get; private set; } = null;
 
 		[NotMapped]
 		public string CustomerName { get; private set; }
@@ -35,6 +37,11 @@ namespace CustomerInvoiceApp.InvoiceManagement.Entities
 		public void SetCustomerName(string name)
 		{
 			CustomerName = name;
+		}
+
+		public void MarkAsPaid(bool? paid)
+		{
+			PaidUp = paid;
 		}
 
 		public void AddLine(Guid productId, string description, int quantity, decimal unitPrice)

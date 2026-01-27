@@ -1,1 +1,91 @@
-<p>invoice-edit works!</p>
+<div class="card" *ngIf="form">
+    <div class="card-header">
+        <h4>Edit Invoice</h4>
+    </div>
+
+    <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="save()">
+
+            <div class="mb-3">
+                <label for="customerId" class="form-label">Customer</label>
+                <select id="customerId" class="form-select" formControlName="customerId">
+                    <option [ngValue]="null">Select Customer</option>
+                    <option *ngFor="let customer of customers" [ngValue]="customer.id">
+                        {{ customer.name }}
+                    </option>
+                </select>
+
+                <div *ngIf="form.get('customerId')?.touched && form.get('customerId')?.invalid" class="text-danger">
+                    Customer is required.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="number" class="form-label">Invoice Number</label>
+                <input type="text" id="number" class="form-control" formControlName="number" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="invoiceDate" class="form-label">Invoice Date</label>
+                <input type="date" id="invoiceDate" class="form-control" formControlName="invoiceDate">
+
+                <div *ngIf="form.get('invoiceDate')?.touched && form.get('invoiceDate')?.invalid" class="text-danger">
+                    Invoice date is required.
+                </div>
+            </div>
+
+            <hr>
+
+            <h5>Invoice Lines</h5>
+
+            <button type="button" class="btn btn-secondary mb-2" (click)="addLine()">
+                Add Line
+            </button>
+
+            <div formArrayName="lines">
+                <div *ngFor="let line of lines.controls; let i = index" [formGroupName]="i" class="card mb-2 p-2">
+                    <input type="hidden" formControlName="id" />
+                    <div class="row g-2">
+                        <div class="col-md-3">
+                            <label class="form-label">Product ID</label>
+                            <input type="text" class="form-control" formControlName="productId" placeholder="Product id">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" formControlName="description" placeholder="Product Description">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">Quantity</label>
+                            <input type="number" class="form-control" formControlName="quantity" step="1" placeholder="Quantity">
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">Unit Price</label>
+                            <input type="number" class="form-control" formControlName="unitPrice" step="0.01" placeholder="Unit Price">
+                        </div>
+
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-danger" (click)="removeLine(i)">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Actions -->
+            <button type="submit" class="btn btn-primary me-2" [disabled]="isSaving">
+                Save Changes
+            </button>
+
+            <button type="button" class="btn btn-secondary" (click)="cancel()">
+                Cancel
+            </button>
+
+        </form>
+    </div>
+</div>

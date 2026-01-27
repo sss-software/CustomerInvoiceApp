@@ -3,6 +3,7 @@ using CustomerInvoiceApp.CustomerManagement.Entities;
 using CustomerInvoiceApp.InvoiceManagement.Dtos;
 using CustomerInvoiceApp.InvoiceManagement.Entities;
 using CustomerInvoiceApp.InvoiceManagement.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+
 
 
 namespace CustomerInvoiceApp.InvoiceManagement
@@ -32,10 +34,9 @@ namespace CustomerInvoiceApp.InvoiceManagement
 
 		public async Task<InvoiceDto> GetAsync(Guid id)
 		{
-			// Step 1: Get the invoice entity including lines
-			var queryable = await _repository.GetQueryableAsync(); // Step 1: get IQueryable<Invoice>
+			var queryable = await _repository.GetQueryableAsync();
 			var invoice = await queryable
-				.Include(i => i.Lines)        // Step 2: Include lines
+				.Include(i => i.Lines) 
 				.FirstOrDefaultAsync(i => i.Id == id);
 
 			if (invoice == null)
@@ -43,39 +44,17 @@ namespace CustomerInvoiceApp.InvoiceManagement
 				throw new UserFriendlyException("Invoice not found");
 			}
 
-			// Step 2: Get customer name
 			var customer = await _customerRepository.GetAsync(invoice.CustomerId);
-
-			// Step 3: Map to DTO
 			var dto = _mapper.Map<InvoiceDto>(invoice);
-			dto.CustomerName = customer.Name; // Add the customer name
+			dto.CustomerName = customer.Name; 
 
 			return dto;
 		}
-
-
-		//public async Task<InvoiceDto> GetAsync(Guid id)
-		//{
-		//	var queryable = await _repository.GetQueryableAsync();
-
-		//	var entity = await queryable
-		//		.Include(i => i.Lines) 
-		//		.FirstOrDefaultAsync(i => i.Id == id);
-
-		//	if (entity == null)
-		//	{
-		//		throw new UserFriendlyException("Invoice not found");
-		//	}
-
-		//	return _mapper.Map<InvoiceDto>(entity);
-		//}
-
 
 		public async Task<PagedResultDto<InvoiceDto>> GetListAsync(InvoiceSearchDto input)
 		{
 			var query = await _repository.GetQueryableAsync();
 
-			// Filter invoices
 			if (!string.IsNullOrWhiteSpace(input.Filter))
 			{
 				query = query.Where(i =>
@@ -86,22 +65,18 @@ namespace CustomerInvoiceApp.InvoiceManagement
 
 			var total = await AsyncExecuter.CountAsync(query);
 
-			// Apply sorting
 			var sorting = string.IsNullOrWhiteSpace(input.Sorting) ? "Number" : input.Sorting;
 			query = query.OrderBy(sorting);
 
-			// Paging
 			var invoicesPaged = query.Skip(input.SkipCount).Take(input.MaxResultCount);
 
 			var invoiceList = await AsyncExecuter.ToListAsync(invoicesPaged);
 
-			// Get customer IDs
 			var customerIds = invoiceList.Select(i => i.CustomerId).Distinct().ToList();
 
 			var customers = await _customerRepository.GetListAsync(c => customerIds.Contains(c.Id));
 			var customerDict = customers.ToDictionary(c => c.Id, c => c.Name);
 
-			// Map to DTO
 			var dtoList = invoiceList.Select(i => new InvoiceDto
 			{
 				Id = i.Id,
@@ -109,7 +84,8 @@ namespace CustomerInvoiceApp.InvoiceManagement
 				InvoiceDate = i.InvoiceDate,
 				CustomerId = i.CustomerId,
 				CustomerName = customerDict.ContainsKey(i.CustomerId) ? customerDict[i.CustomerId] : string.Empty,
-				Lines = _mapper.Map<List<InvoiceLineDto>>(i.Lines)
+				Lines = _mapper.Map<List<InvoiceLineDto>>(i.Lines),
+				PaidUp = i.PaidUp
 			}).ToList();
 
 			return new PagedResultDto<InvoiceDto>(total, dtoList);
@@ -129,6 +105,7 @@ namespace CustomerInvoiceApp.InvoiceManagement
 				input.InvoiceDate,
 				input.Number
 			);
+			invoice.MarkAsPaid(input.PaidUp);
 
 			foreach (var line in input.Lines)
 			{
@@ -141,7 +118,12 @@ namespace CustomerInvoiceApp.InvoiceManagement
 
 		public async Task<InvoiceDto> UpdateAsync(Guid id, CreateUpdateInvoiceDto input)
 		{
-			var invoice = await _repository.GetAsync(id);
+			var queryable = await _repository.GetQueryableAsync();
+
+			var invoice = await queryable
+				.Include(i => i.Lines)
+				.FirstOrDefaultAsync(i => i.Id == id);
+
 			if (invoice == null)
 			{
 				throw new UserFriendlyException("Invoice not found");
@@ -149,10 +131,45 @@ namespace CustomerInvoiceApp.InvoiceManagement
 			invoice.UpdateCustomer(input.CustomerId);
 			invoice.UpdateInvoiceDate(input.InvoiceDate);
 
-			invoice.Lines.Clear();
-			foreach (var line in input.Lines)
+			// -------------------------------
+			// LINE ITEMS DIFF LOGIC
+			// -------------------------------
+
+			var incomingLineIds = input.Lines
+				.Where(l => l.Id.HasValue)
+				.Select(l => l.Id!.Value)
+				.ToHashSet();
+
+			var linesToRemove = invoice.Lines
+				.Where(l => !incomingLineIds.Contains(l.Id))
+				.ToList();
+
+			foreach (var line in linesToRemove)
 			{
-				invoice.AddLine(line.ProductId, line.Description, line.Quantity, line.UnitPrice);
+				invoice.Lines.Remove(line);
+			}
+
+			foreach (var line in invoice.Lines)
+			{
+				var dto = input.Lines.First(l => l.Id == line.Id);
+
+				line.UpdateLine(
+					dto.ProductId,
+					dto.Description,
+					dto.Quantity,
+					dto.UnitPrice
+				);
+			}
+
+			var newLines = input.Lines.Where(l => !l.Id.HasValue);
+			foreach (var dto in newLines)
+			{
+				invoice.AddLine(
+					dto.ProductId,
+					dto.Description,
+					dto.Quantity,
+					dto.UnitPrice
+				);
 			}
 
 			await _repository.UpdateAsync(invoice, autoSave: true);
@@ -177,6 +194,20 @@ namespace CustomerInvoiceApp.InvoiceManagement
 
 			var invoices = await AsyncExecuter.ToListAsync(query);
 			return _mapper.Map<List<InvoiceDto>>(invoices);
+		}
+
+		[HttpPatch]
+		[Route("api/app/invoice/{id}/mark-paid")]
+		public async Task<InvoiceDto> MarkAsPaidAsync(Guid id)
+		{
+			var invoice = await _repository.GetAsync(id);
+			if (invoice.PaidUp == true)
+			{
+				throw new UserFriendlyException("Invoice is already marked as paid.");
+			}
+			invoice.MarkAsPaid(true);
+			await _repository.UpdateAsync(invoice, autoSave: true);
+			return _mapper.Map<InvoiceDto>(invoice);
 		}
 	}
 }
