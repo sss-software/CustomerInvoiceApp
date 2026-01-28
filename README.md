@@ -1,6 +1,22 @@
 ﻿# CustomerInvoiceApp
 **DEVELOPMENT SNAPSHOTS**
+**PUBLIC WEBPAGE**
 <img width="1450" height="706" alt="image" src="https://github.com/user-attachments/assets/6f681bc9-d8c7-458f-a775-e3af99acfcd5" />
+
+**LOGIN PAGE**
+<img width="567" height="745" alt="image" src="https://github.com/user-attachments/assets/230199e2-e4dc-46d6-b7a5-dcdaca8ffc30" />
+
+**LOGGED IN AS STAFF-MEMBER:**
+<img width="1468" height="783" alt="image" src="https://github.com/user-attachments/assets/7faceb66-5f78-452c-a82f-61550c62b62e" />
+
+**CUSTOMER-MANAGEMENT:**
+<img width="1482" height="778" alt="image" src="https://github.com/user-attachments/assets/88c35fb1-872e-4ff1-9c4f-99c0d60761f2" />
+
+**CUSTOMER-DETAILS:**
+<img width="1483" height="778" alt="image" src="https://github.com/user-attachments/assets/bc32b543-2364-435f-8dbb-3366d67c203f" />
+
+
+
 
 
 
