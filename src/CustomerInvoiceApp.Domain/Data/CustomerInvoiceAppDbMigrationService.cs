@@ -53,7 +53,8 @@ public class CustomerInvoiceAppDbMigrationService : ITransientDependency
         await MigrateDatabaseSchemaAsync();
         await SeedDataAsync();
 
-        Logger.LogInformation($"Successfully completed host database migrations.");
+
+		Logger.LogInformation($"Successfully completed host database migrations.");
 
         if (MultiTenancyConsts.IsEnabled)
         {

@@ -2,10 +2,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { ListService } from '@abp/ng.core';
+import { ListService, PermissionService } from '@abp/ng.core';
 import { CustomerProxyService } from '../../services/customer-proxy-service';
 import { CustomerDto, CustomerSearchDto } from '@proxy/customer-management/dtos/models';
 import { ModalRefService } from '@abp/ng.theme.shared';
+
 
 @Component({
   selector: 'app-customer-list',
@@ -25,8 +26,6 @@ export class CustomerListComponent implements OnInit {
   selectCustomer(customerId: string): void {
     this.selectedCustomerId = customerId;
   }
-
-  // Search + sorting + paging state
   searchTerm = '';
   sortingField = 'name';
   sortingDirection: 'asc' | 'desc' = 'asc';
@@ -39,14 +38,24 @@ export class CustomerListComponent implements OnInit {
   public readonly list: ListService = inject(ListService);
   private customerService = inject(CustomerProxyService);
   private router: Router = inject(Router);
-  private modalService = inject(ModalRefService);
+  private permission = inject(PermissionService);
+
   isModalOpen: boolean = false;
   ngOnInit(): void {
-    // Connect ListService to proxy getList
     this.list.hookToQuery((query) => this.getList(query)).subscribe((result) => {
       this.customers = result.items ?? [];
       this.totalCount = result.totalCount;
     });
+     // Subscribe to the observable that holds all permissions
+    this.permission.getGrantedPolicy$('CustomerManagement.Customers.Delete').subscribe(grantedPolicies => {
+      console.log('Granted policies:', grantedPolicies);
+    });
+
+    // Check a specific permission
+    this.permission.getGrantedPolicy$('CustomerManagement.Customers.Delete')
+      .subscribe(isGranted => {
+        console.log('Has CustomerManagement.Customers.Delete?', isGranted);
+      });
   }
 
   private getList(query: {

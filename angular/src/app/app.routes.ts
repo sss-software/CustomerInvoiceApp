@@ -1,4 +1,4 @@
-import { authGuard, permissionGuard } from '@abp/ng.core';
+import { authGuard, PermissionGuard, permissionGuard } from '@abp/ng.core';
 import { Routes } from '@angular/router';
 
 export const APP_ROUTES: Routes = [
@@ -31,10 +31,13 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'customers/:id/delete',
-      canActivate: [authGuard],
+      canActivate: [authGuard, permissionGuard],
     loadComponent: () =>
       import('./customer-management/components/customer-delete/customer-delete')
         .then(c => c.CustomerDeleteComponent),
+    data: {
+      requiredPolicy: 'Customers.Delete',
+    },
   },
   {
     path: 'customers/:id',
@@ -52,10 +55,13 @@ export const APP_ROUTES: Routes = [
   },
   {
     path: 'invoices/create',
-      canActivate: [authGuard],
+      canActivate: [authGuard, permissionGuard],
     loadComponent: () =>
       import('./invoice-management/components/invoice-create/invoice-create')
         .then(c => c.InvoiceCreateComponent),
+    data: {
+      requiredPolicy: 'Invoices.Create',
+    },
   },
   {
     path: 'invoices/:id/edit',

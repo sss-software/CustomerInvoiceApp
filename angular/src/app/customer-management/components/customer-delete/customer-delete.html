@@ -4,7 +4,6 @@
   </div>
 
   <div class="card-body" *ngIf="customer; else loading">
-    <!-- Readonly customer info -->
     <div class="mb-3"><strong>Name:</strong> {{ customer.name }}</div>
     <div class="mb-3"><strong>Email:</strong> {{ customer.email }}</div>
     <div class="mb-3"><strong>Phone:</strong> {{ customer.phone }}</div>
@@ -13,7 +12,6 @@
       {{ customer.billingAddress?.street }}, {{ customer.billingAddress?.city }}, {{ customer.billingAddress?.postalCode }}
     </div>
 
-    <!-- Form for confirmation checkbox -->
     <form [formGroup]="form">
       <div class="form-check mb-3">
         <input type="checkbox" class="form-check-input" formControlName="confirmDelete" id="confirmDelete">
@@ -22,12 +20,10 @@
         </label>
       </div>
 
-      <!-- Delete button -->
-      <button class="btn btn-danger" [disabled]="!form.get('confirmDelete')?.value || isDeleting" (click)="delete()">
+      <button type="button" class="btn btn-danger" [disabled]="!form.get('confirmDelete')?.value || isDeleting" (click)="delete()">
         Delete
       </button>
 
-      <!-- Cancel button -->
       <button class="btn btn-secondary ms-2" type="button" (click)="router.navigate(['/customers'])">
         Cancel
       </button>

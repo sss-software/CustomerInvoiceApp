@@ -1,6 +1,8 @@
 ﻿using Volo.Abp.Application;
+using Volo.Abp.Authorization;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
+using Volo.Abp.PermissionManagement;
 
 namespace CustomerInvoiceApp.CustomerManagement
 {
@@ -10,7 +12,9 @@ namespace CustomerInvoiceApp.CustomerManagement
 		typeof(CustomerManagementApplicationContractsModule),
 		typeof(CustomerManagementEntityFrameworkCoreModule),
 		typeof(AbpDddApplicationModule),
-		typeof(AbpAutoMapperModule)
+		typeof(AbpAutoMapperModule),
+		typeof(AbpAuthorizationModule),
+		typeof(AbpPermissionManagementApplicationModule)
 	)]
 	public class CustomerManagementApplicationModule : AbpModule
 	{

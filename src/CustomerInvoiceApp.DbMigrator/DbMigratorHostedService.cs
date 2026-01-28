@@ -37,7 +37,7 @@ public class DbMigratorHostedService : IHostedService
         {
             await application.InitializeAsync();
 
-            await application
+			await application
                 .ServiceProvider
                 .GetRequiredService<CustomerInvoiceAppDbMigrationService>()
                 .MigrateAsync();

@@ -1,9 +1,11 @@
 ﻿using Abp.Dependency;
-using Abp.Domain.Uow;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Data;
 using Volo.Abp.Identity;
+using Volo.Abp.PermissionManagement;
 
 namespace CustomerInvoiceApp.DataSeed
 {
@@ -11,72 +13,62 @@ namespace CustomerInvoiceApp.DataSeed
 	{
 		private readonly IIdentityRoleRepository _roleRepository;
 		private readonly IdentityRoleManager _roleManager;
+		private readonly IPermissionDataSeeder _permissionDataSeeder;
+		private readonly Volo.Abp.Guids.IGuidGenerator _guidGenerator;
 
-		public AppDataSeedContributor(
-			IIdentityRoleRepository roleRepository,
-			IdentityRoleManager roleManager)
+		public AppDataSeedContributor(IIdentityRoleRepository roleRepository, IdentityRoleManager roleManager, IPermissionDataSeeder permissionDataSeeder, Volo.Abp.Guids.IGuidGenerator guidGenerator)
 		{
 			_roleRepository = roleRepository;
 			_roleManager = roleManager;
-			//_rolePermissionRepository = rolePermissionRepository;
+			_permissionDataSeeder = permissionDataSeeder;
+			_guidGenerator = guidGenerator;
 		}
-
-		[UnitOfWork]
 		public async Task SeedAsync(DataSeedContext context)
 		{
-		//	// --- Admin Role ---
-		//	var adminRole = await _roleManager.FindByNameAsync("Admin");
-		//	if (adminRole == null)
-		//	{
-		//		adminRole = await _roleRepository.InsertAsync(
-		//			new IdentityRole(Guid.NewGuid(), "Admin"), autoSave: true
-		//		);
-		//	}
+			Console.WriteLine(">>> AppDataSeedContributor started...");
+			var adminRole = await _roleRepository.FindByNormalizedNameAsync("ADMIN");
+			if (adminRole == null)
+			{
+				var newRole1 = new IdentityRole(_guidGenerator.Create(), "Admin", context?.TenantId );
 
-		//	// Assign permissions via repository (string-based)
-		//	var adminPermissions = new[]
-		//	{
-		//	"Customers.Delete",
-		//	"Invoices.Create",
-		//	"Invoices.Update",
-		//	"Invoices.Delete"
-		//};
+				var result = await _roleManager.CreateAsync(newRole1);
+				if (!result.Succeeded)
+				{
+					throw new Exception("Failed to create Admin role: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+				}
 
-		//	foreach (var permName in adminPermissions)
-		//	{
-		//		if (!await _rolePermissionRepository.ExistsAsync(adminRole.Id, null, permName))
-		//		{
-		//			await _rolePermissionRepository.InsertAsync(
-		//				new IdentityRolePermission(Guid.NewGuid(), adminRole.Id, null, permName)
-		//			);
-		//		}
-		//	}
+				adminRole = newRole1;
+			}
 
-		//	// --- Staff Role ---
-		//	//var staffRole = await _roleRepository.FindAsync(r => r.Name == "Staff");
-		//	var staffRole = await _roleManager.FindByNameAsync("Staff");
-		//	if (staffRole == null)
-		//	{
-		//		staffRole = await _roleRepository.InsertAsync(
-		//			new IdentityRole(Guid.NewGuid(), "Staff"), autoSave: true
-		//		);
-		//	}
+			await _permissionDataSeeder.SeedAsync(
+					providerName: RolePermissionValueProvider.ProviderName,
+					providerKey: adminRole.Name,
+					grantedPermissions: ["Customers.Delete"],
+					tenantId: context?.TenantId
+			);
 
-		//	var staffPermissions = new[]
-		//	{
-		//	"Invoices.Create",
-		//	"Invoices.Update"
-		//};
+			var staffRole = await _roleRepository.FindByNormalizedNameAsync("STAFF");
+			if (staffRole == null)
+			{
+				var newRole2 = new IdentityRole(_guidGenerator.Create(), "Staff", context?.TenantId);
 
-		//	foreach (var permName in staffPermissions)
-		//	{
-		//		if (!await _rolePermissionRepository.ExistsAsync(staffRole.Id, null, permName))
-		//		{
-		//			await _rolePermissionRepository.InsertAsync(
-		//				new IdentityRolePermission(Guid.NewGuid(), staffRole.Id, null, permName)
-		//			);
-		//		}
-		//	}
+				var result = await _roleManager.CreateAsync(newRole2);
+				if (!result.Succeeded)
+				{
+					throw new Exception("Failed to create Staff role: " + string.Join(", ", result.Errors.Select(e => e.Description)));
+				}
+
+				staffRole = newRole2;
+			}
+
+
+			await _permissionDataSeeder.SeedAsync(
+					providerName: RolePermissionValueProvider.ProviderName,
+					providerKey: staffRole.Name,
+					grantedPermissions: ["Invoices.Create"],
+					tenantId: context?.TenantId
+			);
+			Console.WriteLine(">>> AppDataSeedContributor completed...");
 		}
 	}
 }

@@ -32,7 +32,6 @@ ngOnInit(): void {
         this.invoice = result;
         this.isLoading = false;
 
-        // Calculate total after loading
         this.totalInvoiceAmount = this.invoice.lines.reduce(
           (acc, l) => acc + l.quantity * l.unitPrice,
           0
@@ -46,17 +45,16 @@ ngOnInit(): void {
       }
     });
   }
-  /** Returns the linked customer name */
+
   get customerName(): string {
     return this.invoice?.customerName ?? '';
   }
 
-  /** Returns formatted invoice date */
+
   get invoiceDate(): string {
     return this.invoice?.invoiceDate ? new Date(this.invoice.invoiceDate).toLocaleDateString() : '';
   }
 
-  /** Returns total amount of invoice */
   get totalAmount(): number {
     if (!this.invoice?.lines) return 0;
     return this.invoice.lines.reduce((sum, line) => sum + (line.quantity * line.unitPrice), 0);

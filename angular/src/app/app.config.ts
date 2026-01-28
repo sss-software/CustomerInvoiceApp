@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideAbpCore(
       withOptions({
         environment,
-        registerLocaleFn: registerLocaleForEsBuild(),
+        registerLocaleFn: registerLocaleForEsBuild()
       }),
     ),
     provideAbpOAuth(),
@@ -40,3 +40,11 @@ export const appConfig: ApplicationConfig = {
     provideAbpThemeShared(),
   ]
 };
+function provideAbpLocalization(arg0: {
+  localization: {
+    defaultResourceName: string; // must match backend resource name
+  };
+}): import("@angular/core").Provider | import("@angular/core").EnvironmentProviders {
+  throw new Error('Function not implemented.');
+}
+

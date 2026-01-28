@@ -23,12 +23,10 @@ export class CustomerDeleteComponent implements OnInit {
   private router = inject(Router);
 
   ngOnInit(): void {
-    // Create the confirmation checkbox form
     this.form = this.fb.group({
       confirmDelete: [false],
     });
 
-    // Load customer data by ID
     const id = this.route.snapshot.paramMap.get('id')!;
     this.customerService.get(id).subscribe((c) => (this.customer = c));
 
@@ -38,7 +36,6 @@ export class CustomerDeleteComponent implements OnInit {
   }
 
   delete(): void {
-    debugger;
     if (!this.form.value.confirmDelete) {
       return;
     }

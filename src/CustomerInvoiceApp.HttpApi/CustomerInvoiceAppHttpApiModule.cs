@@ -33,13 +33,13 @@ public class CustomerInvoiceAppHttpApiModule : AbpModule
 
     private void ConfigureLocalization()
     {
-        Configure<AbpLocalizationOptions>(options =>
+		Configure((System.Action<AbpLocalizationOptions>)(options =>
         {
             options.Resources
-                .Get<CustomerInvoiceAppResource>()
+                .Get<Localization.CustomerInvoiceAppResource>()
                 .AddBaseTypes(
                     typeof(AbpUiResource)
                 );
-        });
+        }));
     }
 }

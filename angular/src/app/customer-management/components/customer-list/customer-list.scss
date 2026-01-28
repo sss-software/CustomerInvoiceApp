@@ -19,3 +19,15 @@
 tr.selected-row:hover {
   background-color: #c0ddff; /* slightly darker on hover */
 }
+
+.search-box {
+  width: 800px; 
+}
+
+.action-buttons {
+  margin-right: 20px;
+}
+
+th {
+  cursor: pointer;
+}

@@ -1,1 +1,95 @@
-<p>invoice-delete works!</p>
+@if (isLoading) {
+  <div class="text-center py-3">
+    Loading invoice...
+  </div>
+}
+
+@if (!isLoading && invoice) {
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h4>Invoice {{ invoice.number }}</h4>
+
+      <div class="ms-auto d-flex gap-2">
+        <a routerLink="/customers" class="btn btn-sm btn-outline-secondary">
+          <i class="fas fa-arrow-left me-1"></i>
+          Back to Customers
+        </a>
+        <a routerLink="/invoices" class="btn btn-sm btn-outline-secondary">
+          <i class="fas fa-arrow-left me-1"></i>
+          Back to Invoices
+        </a>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <p><strong>Date:</strong> {{ invoice.invoiceDate | date:'mediumDate' }}</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Customer:</strong> {{ invoice.customerName }}</p>
+        </div>
+      </div>
+
+      <h5>Invoice Lines</h5>
+
+      @if (invoice.lines && invoice.lines.length > 0) {
+        <div class="table-responsive">
+          <table class="table table-striped align-middle">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th class="text-end">Quantity</th>
+                <th class="text-end">Unit Price</th>
+                <th class="text-end">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (line of invoice.lines; let i = $index; track line) {
+                <tr>
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ line.description }}</td>
+                  <td class="text-end">{{ line.quantity }}</td>
+                  <td class="text-end">
+                    {{ line.unitPrice | currency:'ZAR':'symbol':'1.2-2':'en-ZA' }}
+                  </td>
+                  <td class="text-end">
+                    {{ (line.quantity * line.unitPrice) | currency:'ZAR':'symbol':'1.2-2':'en-ZA' }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" class="text-end"><strong>Total Amount:</strong></td>
+                <td class="text-end">
+                  <strong>{{ totalAmount | currency:'ZAR':'symbol':'1.2-2':'en-ZA' }}</strong>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      } @else {
+        <div class="text-muted">No line items found for this invoice.</div>
+      }
+    </div>
+  </div>
+
+    <form [formGroup]="form">
+      <div class="form-check mb-3">
+        <input type="checkbox" class="form-check-input" formControlName="confirmDeactivation" id="confirmDeactivation">
+        <label class="form-check-label" for="confirmDeactivation">
+          I confirm that I want to Deactivate this Invoice
+        </label>
+      </div>
+
+      <button type="button" class="btn btn-danger" [disabled]="!form.get('confirmDeactivation')?.value || isDeleting" (click)="deactivate()">
+        Deactivate Invoice
+      </button>
+
+      <button class="btn btn-secondary ms-2" type="button" (click)="router.navigate(['/invoice'])">
+        Cancel
+      </button>
+    </form>
+}

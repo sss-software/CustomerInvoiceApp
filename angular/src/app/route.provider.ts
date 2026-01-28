@@ -19,17 +19,19 @@ function configureRoutes() {
     },
     {
       path: '/customers',
-      name: '::Menu:Customers',
+      name: 'Customers',
       iconClass: 'fas fa-users',
       order: 2,
       layout: eLayoutType.application,
+      requiredPolicy: 'CustomerManagement.Customers',
     },
      {
       path: '/invoices',
-      name: '::Menu:Invoices',
+      name: 'Invoices',
       iconClass: 'fas fa-file-invoice',
       order: 3,
       layout: eLayoutType.application,
+      requiredPolicy: 'InvoiceManagement.Invoices',
     },
   ]);
 }

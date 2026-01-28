@@ -1016,7 +1016,7 @@
                 "type": "CustomerInvoiceApp.CustomerManagement.Dtos.CustomerDto",
                 "typeSimple": "CustomerInvoiceApp.CustomerManagement.Dtos.CustomerDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.CustomerManagement.ICustomerAppService"
             },
             "GetListAsyncByInput": {
@@ -1089,7 +1089,7 @@
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<CustomerInvoiceApp.CustomerManagement.Dtos.CustomerDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<CustomerInvoiceApp.CustomerManagement.Dtos.CustomerDto>"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.CustomerManagement.ICustomerAppService"
             },
             "CreateAsyncByInput": {
@@ -1126,7 +1126,7 @@
                 "type": "CustomerInvoiceApp.CustomerManagement.Dtos.CustomerDto",
                 "typeSimple": "CustomerInvoiceApp.CustomerManagement.Dtos.CustomerDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.CustomerManagement.ICustomerAppService"
             },
             "UpdateAsyncByIdAndInput": {
@@ -1183,7 +1183,7 @@
                 "type": "CustomerInvoiceApp.CustomerManagement.Dtos.CustomerDto",
                 "typeSimple": "CustomerInvoiceApp.CustomerManagement.Dtos.CustomerDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.CustomerManagement.ICustomerAppService"
             },
             "DeleteAsyncById": {
@@ -1220,7 +1220,7 @@
                 "type": "System.Void",
                 "typeSimple": "System.Void"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.CustomerManagement.ICustomerAppService"
             }
           }
@@ -1402,7 +1402,7 @@
                 "type": "CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto",
                 "typeSimple": "CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.InvoiceManagement.Interfaces.IInvoiceAppService"
             },
             "GetListAsyncByInput": {
@@ -1475,7 +1475,7 @@
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto>"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.InvoiceManagement.Interfaces.IInvoiceAppService"
             },
             "CreateAsyncByInput": {
@@ -1512,7 +1512,7 @@
                 "type": "CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto",
                 "typeSimple": "CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.InvoiceManagement.Interfaces.IInvoiceAppService"
             },
             "UpdateAsyncByIdAndInput": {
@@ -1569,7 +1569,7 @@
                 "type": "CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto",
                 "typeSimple": "CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.InvoiceManagement.Interfaces.IInvoiceAppService"
             },
             "DeleteAsyncById": {
@@ -1606,7 +1606,7 @@
                 "type": "System.Void",
                 "typeSimple": "System.Void"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.InvoiceManagement.Interfaces.IInvoiceAppService"
             },
             "GetByCustomerAsyncByCustomerId": {
@@ -1643,7 +1643,7 @@
                 "type": "System.Collections.Generic.List<CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto>",
                 "typeSimple": "[CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto]"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.InvoiceManagement.Interfaces.IInvoiceAppService"
             },
             "MarkAsPaidAsyncById": {
@@ -1680,7 +1680,7 @@
                 "type": "CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto",
                 "typeSimple": "CustomerInvoiceApp.InvoiceManagement.Dtos.InvoiceDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "CustomerInvoiceApp.InvoiceManagement.Interfaces.IInvoiceAppService"
             }
           }

@@ -2,6 +2,8 @@
 using CustomerInvoiceApp.CustomerManagement.Dtos;
 using CustomerInvoiceApp.CustomerManagement.Entities;
 using CustomerInvoiceApp.CustomerManagement.ValueObjects;
+using CustomerInvoiceApp.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace CustomerInvoiceApp.CustomerManagement
 {
+	[Authorize]
 	public class CustomerAppService : ApplicationService, ICustomerAppService
 	{
 		private readonly IRepository<Customer, Guid> _repository;
@@ -102,6 +105,7 @@ namespace CustomerInvoiceApp.CustomerManagement
 			return dto;
 		}
 
+		[Authorize(CustomerManagementPermissions.Customers.Delete)]
 		public async Task DeleteAsync(Guid id)
 		{
 			var customer = await _repository.FindAsync(id);

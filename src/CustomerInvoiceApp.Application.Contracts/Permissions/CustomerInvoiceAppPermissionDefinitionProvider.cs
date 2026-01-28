@@ -17,6 +17,6 @@ public class CustomerInvoiceAppPermissionDefinitionProvider : PermissionDefiniti
 
     private static LocalizableString L(string name)
     {
-        return LocalizableString.Create<CustomerInvoiceAppResource>(name);
+        return LocalizableString.Create<LocalAppResource>(name);
     }
 }

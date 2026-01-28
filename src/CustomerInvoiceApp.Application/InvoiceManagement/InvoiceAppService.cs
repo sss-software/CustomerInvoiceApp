@@ -3,6 +3,8 @@ using CustomerInvoiceApp.CustomerManagement.Entities;
 using CustomerInvoiceApp.InvoiceManagement.Dtos;
 using CustomerInvoiceApp.InvoiceManagement.Entities;
 using CustomerInvoiceApp.InvoiceManagement.Interfaces;
+using CustomerInvoiceApp.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,6 +21,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace CustomerInvoiceApp.InvoiceManagement
 {
+	[Authorize]
 	public class InvoiceAppService : ApplicationService, IInvoiceAppService
 	{
 		private readonly IRepository<Invoice, Guid> _repository;
@@ -91,7 +94,7 @@ namespace CustomerInvoiceApp.InvoiceManagement
 			return new PagedResultDto<InvoiceDto>(total, dtoList);
 		}
 
-
+		[Authorize(InvoiceManagementPermissions.Invoices.Create)]
 		public async Task<InvoiceDto> CreateAsync(CreateUpdateInvoiceDto input)
 		{
 			var customer = await _customerRepository.GetAsync(input.CustomerId);
