@@ -15,9 +15,38 @@
 **CUSTOMER-DETAILS:**
 <img width="1483" height="778" alt="image" src="https://github.com/user-attachments/assets/bc32b543-2364-435f-8dbb-3366d67c203f" />
 
+**CUSTOMER-EDIT:**
+<img width="1486" height="780" alt="image" src="https://github.com/user-attachments/assets/21a04fd6-f755-4c69-85f1-87238fdeffe5" />
 
+**CUSTOMER-DELETE - NO PERMISSIONS: - ONLY USER WITH ROLES CUSTOMERS.DELETE - ADMIN**
+<img width="1478" height="774" alt="image" src="https://github.com/user-attachments/assets/b176dd33-840e-48d4-856b-62bc9f0058de" />
 
+**CUSTOMER-CREATE - CREATE CUSTOMER:**
+<img width="1480" height="782" alt="image" src="https://github.com/user-attachments/assets/60a480c8-e586-4b23-85bb-3e93de358d37" />
 
+**INVOICE-MANAGEMENT:**
+<img width="1482" height="776" alt="image" src="https://github.com/user-attachments/assets/e7c0e7f5-dff9-4126-ab5e-7e8e0ee94c85" />
+
+**INVOICE-CREATE: - STAFF CAN CREATE INVOICE**
+<img width="1478" height="777" alt="image" src="https://github.com/user-attachments/assets/10d0f95b-3c3d-49c7-a0d2-d106f14c0fde" />
+
+**INVOICE-DETAILS:**
+<img width="1475" height="775" alt="image" src="https://github.com/user-attachments/assets/3fa1147c-85e2-4faf-8948-81489e046c8f" />
+
+**INVOICE-EDIT:**
+<img width="1385" height="797" alt="image" src="https://github.com/user-attachments/assets/1d63c2ad-ea5a-45dd-9021-14930badb307" />
+
+**INVOICE-DEACTIVATE:**
+<img width="1377" height="792" alt="image" src="https://github.com/user-attachments/assets/c8df4961-5fde-45a0-ad07-5d85d0de6190" />
+
+**SWAGGER:**
+<img width="1223" height="913" alt="image" src="https://github.com/user-attachments/assets/d83e151b-b2d4-4f50-8e87-42573163a3a5" />
+
+**DATABASE:**
+<img width="444" height="878" alt="image" src="https://github.com/user-attachments/assets/d234f8d2-1100-44a5-b036-e281ea7ec41c" />
+
+**SOLUTION STRUCTURE:**
+<img width="575" height="680" alt="image" src="https://github.com/user-attachments/assets/a8fb202d-2724-4ac9-ac10-7b69ec2bf64e" />
 
 
 ## About this solution
